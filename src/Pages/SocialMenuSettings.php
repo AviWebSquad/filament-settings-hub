@@ -2,10 +2,11 @@
 
 namespace TomatoPHP\FilamentSettingsHub\Pages;
 
-use Filament\Forms\Components\Grid;
+use Filament\Facades\Filament;
+use Filament\Actions\Action;
+use Filament\Schemas\Components\Grid;
 use Filament\Forms\Components\Repeater;
 use Filament\Forms\Components\TextInput;
-use Filament\Pages\Actions\Action;
 use Filament\Pages\SettingsPage;
 use TomatoPHP\FilamentSettingsHub\Settings\SitesSettings;
 use TomatoPHP\FilamentSettingsHub\Traits\UseShield;
@@ -14,7 +15,7 @@ class SocialMenuSettings extends SettingsPage
 {
     use UseShield;
 
-    protected static ?string $navigationIcon = 'heroicon-o-cog';
+    protected static string | \BackedEnum | null $navigationIcon = 'heroicon-o-cog';
 
     protected static string $settings = SitesSettings::class;
 
@@ -25,15 +26,15 @@ class SocialMenuSettings extends SettingsPage
 
     protected function getActions(): array
     {
-        $tenant = \Filament\Facades\Filament::getTenant();
+        $tenant = Filament::getTenant();
         if ($tenant) {
             return [
-                Action::make('back')->action(fn () => redirect()->route('filament.' . filament()->getCurrentPanel()->getId() . '.pages.settings-hub', $tenant))->color('danger')->label(trans('filament-settings-hub::messages.back')),
+                Action::make('back')->action(fn () => redirect()->route('filament.' . filament()->getCurrentOrDefaultPanel()->getId() . '.pages.settings-hub', $tenant))->color('danger')->label(trans('filament-settings-hub::messages.back')),
             ];
         }
 
         return [
-            Action::make('back')->action(fn () => redirect()->route('filament.' . filament()->getCurrentPanel()->getId() . '.pages.settings-hub'))->color('danger')->label(trans('filament-settings-hub::messages.back')),
+            Action::make('back')->action(fn () => redirect()->route('filament.' . filament()->getCurrentOrDefaultPanel()->getId() . '.pages.settings-hub'))->color('danger')->label(trans('filament-settings-hub::messages.back')),
         ];
     }
 
