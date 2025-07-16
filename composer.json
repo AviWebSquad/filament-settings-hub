@@ -52,11 +52,11 @@
     },
     "require": {
         "php": "^8.2|^8.3|^8.4",
-        "tomatophp/console-helpers": "^1.1",
-        "filament/filament": "^3.3",
-        "filament/notifications": "^3.3",
-        "filament/spatie-laravel-settings-plugin": "^3.3",
-        "spatie/laravel-sitemap": "^7.3"
+        "tomatophp/console-helpers": "*",
+        "filament/filament": "*",
+        "filament/notifications": "*",
+        "filament/spatie-laravel-settings-plugin": "*",
+        "spatie/laravel-sitemap": "*"
     },
     "require-dev": {
         "laravel/pint": "^1.21",
