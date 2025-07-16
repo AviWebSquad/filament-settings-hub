@@ -2,12 +2,13 @@
 
 namespace TomatoPHP\FilamentSettingsHub\Pages;
 
+use Filament\Facades\Filament;
+use Filament\Actions\Action;
+use Filament\Schemas\Components\Grid;
 use Filament\Forms\Components\FileUpload;
-use Filament\Forms\Components\Grid;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
 use Filament\Notifications\Notification;
-use Filament\Pages\Actions\Action;
 use Filament\Pages\SettingsPage;
 use Spatie\Sitemap\SitemapGenerator;
 use TomatoPHP\FilamentSettingsHub\Settings\SitesSettings;
@@ -17,7 +18,7 @@ class SiteSettings extends SettingsPage
 {
     use UseShield;
 
-    protected static ?string $navigationIcon = 'heroicon-o-cog';
+    protected static string | \BackedEnum | null $navigationIcon = 'heroicon-o-cog';
 
     protected static string $settings = SitesSettings::class;
 
@@ -33,14 +34,14 @@ class SiteSettings extends SettingsPage
 
     protected function getActions(): array
     {
-        $tenant = \Filament\Facades\Filament::getTenant();
+        $tenant = Filament::getTenant();
         if ($tenant) {
             return [
                 Action::make('sitemap')
                     ->requiresConfirmation()
                     ->action(fn () => $this->generateSitemap())
                     ->label(trans('filament-settings-hub::messages.settings.site.site-map')),
-                Action::make('back')->action(fn () => redirect()->route('filament.' . filament()->getCurrentPanel()->getId() . '.pages.settings-hub', $tenant))->color('danger')->label(trans('filament-settings-hub::messages.back')),
+                Action::make('back')->action(fn () => redirect()->route('filament.' . filament()->getCurrentOrDefaultPanel()->getId() . '.pages.settings-hub', $tenant))->color('danger')->label(trans('filament-settings-hub::messages.back')),
             ];
         }
 
@@ -49,7 +50,7 @@ class SiteSettings extends SettingsPage
                 ->requiresConfirmation()
                 ->action(fn () => $this->generateSitemap())
                 ->label(trans('filament-settings-hub::messages.settings.site.site-map')),
-            Action::make('back')->action(fn () => redirect()->route('filament.' . filament()->getCurrentPanel()->getId() . '.pages.settings-hub'))->color('danger')->label(trans('filament-settings-hub::messages.back')),
+            Action::make('back')->action(fn () => redirect()->route('filament.' . filament()->getCurrentOrDefaultPanel()->getId() . '.pages.settings-hub'))->color('danger')->label(trans('filament-settings-hub::messages.back')),
         ];
     }
 
